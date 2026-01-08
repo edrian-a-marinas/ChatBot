@@ -136,7 +136,7 @@ const [inputText, setInputText] = React.useState(''); // bali inputText is sthe 
 
 
 
-jan 7
+jan 7 - 8
 State = data that is connected to HTMl
 React.useState give 2 values, the current value and the value updater
 
@@ -181,6 +181,13 @@ pydantic - Data validation library. for easy to see the errors
 EmailStr - to locate error if the emailStr doesnt have @, BaseModel - early str, int in class. in @validator you can custom your what you want
 
 
+Jan 9
+CRUD = is POST GET PUT DELETE - HTTP Methods
+
+Create -> POST -> Adding new to server (either client or admin)
+Read -> GET -> retrieving or viewing data. (client)
+Update -> PUT -> modifying existing data (admin)
+Delete -> DELETE -> removing data (either client or admin)
 
 
 
