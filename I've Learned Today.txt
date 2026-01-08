@@ -189,7 +189,7 @@ Read -> GET -> retrieving or viewing data. (client)
 Update -> PUT -> modifying existing data (admin)
 Delete -> DELETE -> removing data (either client or admin)
 
-
+stopped at #3 in tutorial, mag diretso na agad sa AI chatbot.
 
 
 
