@@ -1,11 +1,11 @@
-# main.py
 from fastapi import FastAPI
 from pydantic import BaseModel
 
 app = FastAPI()
 
-
-
+@app.get("users/{user_id}")
+def road_user(user_id:int):
+  return 
 
 
 
