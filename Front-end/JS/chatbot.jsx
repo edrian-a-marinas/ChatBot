@@ -5,7 +5,13 @@ function ChatInput({ chatMessages, setChatMessages }) {
     setInputText(event.target.value);
   }
 
-  function sendMessage() {
+  function enterText(event) {
+    if (event.key === 'Enter'){
+      sendMessage();
+    }
+  }
+
+  async function sendMessage() {
     if (!inputText.trim()) return; // Ignore empty input
 
     // Add user message first
@@ -17,36 +23,48 @@ function ChatInput({ chatMessages, setChatMessages }) {
         id: crypto.randomUUID()
       }
     ];
-    setChatMessages(newChatMessages);
 
-    // Call Python backend
-    fetch('http://127.0.0.1:8000/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: inputText })
-    })
-      .then(res => res.json())
-      .then(data => {
-        setChatMessages([
-          ...newChatMessages,
-          {
-            message: data.reply,
-            sender: 'robot',
-            id: crypto.randomUUID()
-          }
-        ]);
-      })
-      .catch(err => {
-        console.error(err);
-        setChatMessages([
-          ...newChatMessages,
-          {
-            message: 'Oops! Something went wrong connecting to the chatbot.',
-            sender: 'robot',
-            id: crypto.randomUUID()
-          }
-        ]);
+    setChatMessages(newChatMessages);
+    const typingMessage = {
+      message: 'Thinking...',
+      sender: 'robot',
+      id: crypto.randomUUID(),
+      typing: true // optional flag
+    };    
+    setChatMessages(prev => [...prev, typingMessage]);
+    
+    try {
+      const res = await fetch('http://127.0.0.1:8000/chat', {  // Call Python main.py backend
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: inputText })
       });
+
+      const data = await res.json(); // wait for JSON parsing
+
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // Add robot reply
+      setChatMessages([
+        ...newChatMessages,
+        {
+          message: data.reply,
+          sender: 'robot',
+          id: crypto.randomUUID()
+        }
+      ]);
+
+    } catch (err) {
+      console.error(err);
+      setChatMessages([
+        ...newChatMessages,
+        {
+          message: 'Server error. Please try again later.',
+          sender: 'robot',
+          id: crypto.randomUUID()
+        }
+      ]);
+    }
 
     setInputText('');
   }
@@ -57,6 +75,8 @@ function ChatInput({ chatMessages, setChatMessages }) {
         placeholder="Get to know Ian"
         size="25"
         onChange={saveInputText}
+        onKeyDown={enterText}
+        
         value={inputText}
       />
       <button onClick={sendMessage}>
@@ -66,15 +86,16 @@ function ChatInput({ chatMessages, setChatMessages }) {
   );
 }
 
-function ChatMessage({ message, sender }) {
+function ChatMessage({ message, sender, typing }) {
   return (
     <div>
       {sender === 'robot' && (
         <img className="icon" src="CSS/Images/robot.png" />
       )}
 
-      {message}
-
+      <span className={typing ? 'typing' : ''}>
+        {message}
+      </span>
       {sender === 'user' && (
         <img className="icon" src="CSS/Images/user.png" />
       )}
