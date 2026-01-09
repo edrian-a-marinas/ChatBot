@@ -196,8 +196,20 @@ request library python
 
 res=request.get("https,random.com/api")to get apis online for free of the others using python
 
+jan 10
+FastAPI - expects json
+decorator - autorun yung function na yun kapag na tawag.
+REST Api = frontend and backend talking to each other.
+frontend, JS fetch the "@app/chat" method as POST, then if post babasahin nmn ng backend kung ano yung ma rereply nya ayun yung nasa "return"
 
+fetch -> JS Function to make HTTP Requests. kaya ito yung mag c call sa API
+fetching - need ng method, headers and body in conditions
+method - Need kapag hindi GET,  kapag post put delete need ng method.
+headers - need kapag sending json or custom content  "Content-Type": "application/json"}
+body - kapag POST, PUT, and PATCH. 
 
+async/await
+await - wait for this to finish before running. but only inside the async function, para d mag ka gulo gulo yung nasa loob at flow sa loob ng function, para mag go with the flow, at pause
 
 
 
