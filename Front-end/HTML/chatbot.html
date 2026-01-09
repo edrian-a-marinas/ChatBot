@@ -2,19 +2,23 @@
 <html>
   <head>
     <title>Chatbot</title>
-        <link rel="stylesheet" href="../CSS/chatbot.css" >
+    <link rel="stylesheet" href="../CSS/chatbot.css">
   </head>
 
   <body>
     <div class="js-container"></div>
- 
-    
-    <script src="https://unpkg.com/supersimpledev/react.js"></script>
-    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script> 
-    <script src="https://unpkg.com/supersimpledev@8.6.4/babel.js"></script>
 
+    <!-- Official React 18 -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+    <!-- Babel (required for JSX in browser) -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Your chatbot logic -->
     <script src="../External-Lib/chatbot-lib.js"></script>
 
-    <script type="text/babel" src="../JS/chatbot.js"></script>
+    <!-- JSX file -->
+    <script type="text/babel" src="../JS/chatbot.jsx"></script>
   </body>
 </html>
