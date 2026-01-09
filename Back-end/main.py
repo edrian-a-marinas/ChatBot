@@ -21,7 +21,7 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     reply: str
 
-@app.post("/chat", response_model=ChatResponse)
-def chat_endpoint(request: ChatRequest):
-    response_text = chatbot.get_response(request.message)
-    return {"reply": response_text}
+@app.post("/chat")
+def chat_endpoint(request: ChatRequest):  # this is like request = ChatRequest indirect way
+    response_text = chatbot.get_response(request.message) # calling the function in chatboy.py
+    return {"reply": response_text} 
