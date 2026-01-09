@@ -1,12 +1,14 @@
-function ChatInput({chatMessages, setChatMessages}) {
+function ChatInput({ chatMessages, setChatMessages }) {
   const [inputText, setInputText] = React.useState('');
 
-  function saveInputText(event){
+  function saveInputText(event) {
     setInputText(event.target.value);
-    
   }
-  
+
   function sendMessage() {
+    if (!inputText.trim()) return; // Ignore empty input
+
+    // Add user message first
     const newChatMessages = [
       ...chatMessages,
       {
@@ -14,106 +16,97 @@ function ChatInput({chatMessages, setChatMessages}) {
         sender: 'user',
         id: crypto.randomUUID()
       }
-    ]
-
+    ];
     setChatMessages(newChatMessages);
 
-    const response = Chatbot.getResponse(inputText);
-    
-    setChatMessages([
-      ...newChatMessages,
-      {
-        message: response,
-        sender: 'robot',
-        id: crypto.randomUUID()
-      }
-    ]);
+    // Call Python backend
+    fetch('http://127.0.0.1:8000/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: inputText })
+    })
+      .then(res => res.json())
+      .then(data => {
+        setChatMessages([
+          ...newChatMessages,
+          {
+            message: data.reply,
+            sender: 'robot',
+            id: crypto.randomUUID()
+          }
+        ]);
+      })
+      .catch(err => {
+        console.error(err);
+        setChatMessages([
+          ...newChatMessages,
+          {
+            message: 'Oops! Something went wrong connecting to the chatbot.',
+            sender: 'robot',
+            id: crypto.randomUUID()
+          }
+        ]);
+      });
 
     setInputText('');
   }
 
   return (
     <>
-      <input 
-        placeholder="Get to know Ian" 
-        size="25" 
+      <input
+        placeholder="Get to know Ian"
+        size="25"
         onChange={saveInputText}
         value={inputText}
       />
-      <button 
-        onClick={sendMessage}>
-          Send Text
+      <button onClick={sendMessage}>
+        Send Text
       </button>
     </>
   );
 }
 
-function ChatMessage({ message, sender }){
+function ChatMessage({ message, sender }) {
   return (
     <div>
       {sender === 'robot' && (
-        <img className="icon" 
-        src="../CSS/Images/robot.png" />
+        <img className="icon" src="CSS/Images/robot.png" />
       )}
 
       {message}
-  
+
       {sender === 'user' && (
-        <img className="icon" 
-        src="../CSS/Images/user.png" />
-        )}
-      
+        <img className="icon" src="CSS/Images/user.png" />
+      )}
     </div>
   );
 }
 
-
-function ChatMessages({chatMessages}) {
+function ChatMessages({ chatMessages }) {
   return (
-    <> 
-      {chatMessages.map((chatMessage) => {
-        return (
-          <ChatMessage 
-          
-            message={chatMessage.message}
-            sender={chatMessage.sender}
-            key={chatMessage.id}
-          />
-        );   
-      })}
+    <>
+      {chatMessages.map(chatMessage => (
+        <ChatMessage
+          message={chatMessage.message}
+          sender={chatMessage.sender}
+          key={chatMessage.id}
+        />
+      ))}
     </>
   );
 }
 
-
 function App() {
-  const [chatMessages, setChatMessages] = React.useState([{
-    message: 'hello chatbot',
-    sender: 'user',
-    id: 1
-  }, {
-    message: 'Hello! How can I help you?',
-    sender: 'robot',
-    id: 2 
-  }, {
-    message: 'When is your birthday?',
-    sender: 'user',
-    id: 3
-  }, {
-    message: 'January 27',
-    sender: 'robot',
-    id: 4
-  }]);
+  const [chatMessages, setChatMessages] = React.useState([]);
 
   return (
     <>
-      <ChatInput 
+      <ChatInput
         chatMessages={chatMessages}
         setChatMessages={setChatMessages}
       />
-      <ChatMessages 
+      <ChatMessages
         chatMessages={chatMessages}
-
       />
     </>
   );
