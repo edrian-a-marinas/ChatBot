@@ -192,7 +192,9 @@ Delete -> DELETE -> removing data (either client or admin)
 stopped at #3 in tutorial, mag diretso na agad sa AI chatbot.
 
 
+request library python
 
+res=request.get("https,random.com/api")to get apis online for free of the others using python
 
 
 
