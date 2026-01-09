@@ -17,8 +17,8 @@ class Chatbot:
             "how are you": lambda: "I'm doing great! How can I help you?",
             "thank you": lambda: "No problem! Let me know if you need anything else.",
 
-            "age": lambda: "I'm 21 years old.",
-            "birthday": lambda: "January 27, 2004",
+            "age": lambda: f"I'm {self.age()}",
+            "when is your birthday": lambda: "January 27, 2004",
             "where do you live": self.whereLive,
             "hobbies": lambda: "I enjoy coding and listening to music.",
             "skills": lambda: "Python, JavaScript, SQL, and HTML/CSS.",
@@ -46,7 +46,10 @@ class Chatbot:
 
     # ---------- Identity ----------
     def introduce(self):
-        return f"I'm {self.fullName()}. {self.whereLive()} {self.jobHunt()}"
+        return f"I'm {self.fullName()}, {self.age()} {self.whereLive()} {self.jobHunt()}"
+    
+    def age(self):
+        return "21 years old."
 
     def fullName(self):
         return "Edrian Aldrin C. Marinas"
@@ -120,6 +123,9 @@ class Chatbot:
         message = message.lower().strip()
 
         # ---- HARD INTENT CHECKS (fast & accurate) ----
+        if "favorite language" in message:
+            return "My favorite programming language is Python because of its simplicity, versatility, and readability."
+                
         if any(word in message for word in ["name", "who are you"]):
             return self.fullName()
 
@@ -128,6 +134,8 @@ class Chatbot:
 
         if any(word in message for word in ["hello", "hi", "hey"]):
             return "Hello! How can I help you?"
+        
+
 
         # ---- SIMILARITY MATCHING (ONLY IF STRONG) ----
         best_match = None

@@ -10,7 +10,9 @@ Rules:
 - You live in Manila, Philippines
 - You are looking for backend / Python developer roles
 - You speak professionally but friendly
+- If asked about your favorite programming language, always answer Python and why you love it.
 - If asked personal info, answer as Edrian
+- Age is 21 years old and your birthday is January 27, 2004
 - If unsure, answer honestly and briefly
 """
 
@@ -27,5 +29,5 @@ def ai_think(user_message: str) -> str:
         data = res.json()
         return data.get("response", "Hmm, I couldn't generate a reply.").strip()
     except Exception as e:
-        print("AI error:", e)   # <-- log actual error
-        return "Sorry, my AI is unavailable right now."
+        #print("AI error:", e)   
+        return "Sorry, I cannot answer that. It's beyond my scope."
