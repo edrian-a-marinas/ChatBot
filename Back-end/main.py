@@ -1,61 +1,27 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from chatbot import Chatbot  
 
 app = FastAPI()
+chatbot = Chatbot()
 
-@app.get("users/{user_id}")
-def road_user(user_id:int):
-  return 
+# Allow frontend to access backend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://127.0.0.1:5000"],  # frontend server
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
+class ChatRequest(BaseModel):
+    message: str
 
+class ChatResponse(BaseModel):
+    reply: str
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-"""  basic CRUD example
-@app.get("/")
-def read_root():
-    return {"message": "Hello, World!"}
-
-@app.post("/items/")
-def create_item(name: str, price: float):
-    return {"name":name, "price": price}
-
-@app.put("/items/{item_id}")
-def update_item(item_id: int, name: str, price: float):
-    return {"item_id": item_id, "name": name, "price": price}
-
-@app.delete("/items/{item_id}")
-def delete_item(item_id: int):
-    return {"message": f"Item {item_id} deleted successfully"}
-
-""" 
-
-
-""" basic pydantic eexample
-class Item(BaseModel):
-    name: str
-    price: float
-
-
-@app.post("/items1/")
-def create_try(item: Item):
-    return {"Name":item.name, "price":item.price}
-"""
+@app.post("/chat", response_model=ChatResponse)
+def chat_endpoint(request: ChatRequest):
+    response_text = chatbot.get_response(request.message)
+    return {"reply": response_text}
