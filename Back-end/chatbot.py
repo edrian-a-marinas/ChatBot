@@ -1,164 +1,151 @@
 import random
 from datetime import datetime
 import requests
+from ai_brain import ai_think
+
 
 class Chatbot:
-  def __init__(self):
-    self.default_responses = {
-      "Tell me about yourself, Introduce": f"I'm {self.fullName()}, {self.whereLive()} Currently  {self.jobHunt()} ",
-      "name": f"Hello! I'm {self.fullName}",
-      "nickname" : "Call me Ian for short",
-      "degree":"I'm Currently holding B.S Information Technology from Our Lady of Fatima",
+    def __init__(self):
+        self.default_responses = {
+            "introduce yourself": self.introduce,
+            "your name": self.fullName,
+            "nickname": lambda: "Call me Ian for short",
+            "degree": lambda: "I'm currently holding a BS in Information Technology from Our Lady of Fatima.",
 
-      "hello hi hey": "Hello! How can I help you?",
-      "how are": "I'm doing great! How can I help you?",   #Actually looking for job?
-      "thank": "No problem! Let me know if you need help with anything else!",
-      "How old are you, your age?": "I'm 21 Years old",
-      "when birthday": "January 27, 2004",
-      "where do you live": f"{self.whereLive()}",
-      "hobbies hobby": "I enjoy coding, and listening to music.",
-      "skills, programming languages": "Python, Javascript, SQL and HTML/CSS",
-      "passionate, passion,": "I'm Passionate at Python and back-end development",
-      "favorite movies": "My favorite is Knives out",
-      "favorite show": "My Favorite show is breaking bad.",
-      "favorite anime": "One piece is my favorite anime",
-      "favorite language": "My Favorite language is Python.",
-      "status, doing, current":" I am currently a graduating student at Our Lady of Fatima, looking for job opportunities, internships, or OJT placements to gain experience and contribute.",
-      "social, reach you, contacts, gmail": lambda: (
-        "Here’s how to reach me!"
-        "Facebook: https://facebook.com/edri.a.marinas "
-        "LinkedIn: https://linkedin.com/in/edrian-a-marinas "
-        "Github: https://github.com/edrian-a-marinas "
-        "Gmail: edrian.aldrin.marinas@gmail.com "
-        "Contact Number: 09854703444"
-      ),
-      "single relationship you taken": "I'm currently in relationship since August 22, 2019",
-      "married": "Not married yet, just planning on it.",
-      "do you do, employed,": self.jobHunt(),
-      "employed":f"Not currently employed. {self.jobHunt()}",
-      "looking for job": self.jobHunt,      
-      "flip a coin": self.flip_coin,
-      "roll a dice": self.roll_dice,
-      "what is the date today, year": self.date_today,
-      "Tell me a joke": self.get_joke,
-      "Quote": self.get_quote
-      
+            "hello": lambda: "Hello! How can I help you?",
+            "hi": lambda: "Hi! What can I do for you?",
+            "how are you": lambda: "I'm doing great! How can I help you?",
+            "thank you": lambda: "No problem! Let me know if you need anything else.",
 
-    }
+            "age": lambda: "I'm 21 years old.",
+            "birthday": lambda: "January 27, 2004",
+            "where do you live": self.whereLive,
+            "hobbies": lambda: "I enjoy coding and listening to music.",
+            "skills": lambda: "Python, JavaScript, SQL, and HTML/CSS.",
+            "passion": lambda: "I'm passionate about Python and backend development.",
 
-    self.additional_responses = {}
-    self.unsuccessful_response = (
-      "Sorry, I didn't quite understand that. I can tell you joke if you want to!"
-    )
+            "favorite movie": lambda: "My favorite movie is Knives Out.",
+            "favorite show": lambda: "My favorite show is Breaking Bad.",
+            "favorite anime": lambda: "One Piece is my favorite anime.",
+            "favorite language": lambda: "My favorite programming language is Python.",
 
-  # --- Response functions ---
-  def my_contacts(self):
-    return "Facebook: https://facebook.com/edri.a.marinas Linkedin: https://linkedin.com/in/edrian-a-marinas Github: https://github.com/edrian-a-marinas Gmail: edrian.aldrin.marinas@gmail.com ContactNumber: 09854703444 "
+            "status": self.jobHunt,
+            "do you job": self.jobHunt,
+            "employed": self.jobHunt,
 
-  def whereLive(self):
-    return "I live in Manila Philippines."
+            "contact": self.my_contacts,
+            "social": self.my_contacts,
 
-  def fullName(self):
-    return "Edrian Aldrin C. Marinas"
-
-  def jobHunt (self):
-    return "I'm looking for jobs as a Software/Web developer focused on backend."
-
-  def flip_coin(self):
-    return "Sure! You got heads" if random.random() < 0.5 else "Sure! You got tails"
-
-  def roll_dice(self):
-    return f"Sure! You got {random.randint(1,6)}"
-
-  def date_today(self):
-    now = datetime.now()
-    month = now.strftime("%B")
-    day = now.day
-    year = now.year
-    return f"Today is {month} {day}, {year}"
-  
-    # --- Random joke ---
-  def get_joke(self):
-    try:
-      res = requests.get("https://official-joke-api.appspot.com/jokes/random", timeout=5)
-      data = res.json()
-      return f"{data['setup']} ... {data['punchline']}"
-    except Exception as e:
-      return "Sorry, I couldn't fetch a joke right now."
-
-  # --- Random quote ---
-  def get_quote(self):
-    try:
-      res = requests.get("https://api.quotable.io/random", timeout=5)
-      data = res.json()
-      return f"\"{data['content']}\" — {data['author']}"
-    except Exception as e:
-      return "Sorry, I couldn't fetch a quote right now."
+            "flip a coin": self.flip_coin,
+            "roll a dice": self.roll_dice,
+            "date today": self.date_today,
+            "tell me a joke": self.get_joke,
+            "quote": self.get_quote,
+        }
 
 
+    # ---------- Identity ----------
+    def introduce(self):
+        return f"I'm {self.fullName()}. {self.whereLive()} {self.jobHunt()}"
 
-  # --- Add additional responses ---
-  def add_responses(self, responses: dict):
-    self.additional_responses.update(responses)
+    def fullName(self):
+        return "Edrian Aldrin C. Marinas"
 
-  # --- Compute similarity ---
-  def compare_two_strings(self, first: str, second: str) -> float:
-    first = first.replace(" ", "")
-    second = second.replace(" ", "")
+    def whereLive(self):
+        return "I live in Manila, Philippines."
 
-    if first == second:
-      return 1.0
-    if len(first) < 2 or len(second) < 2:
-      return 0.0
+    def jobHunt(self):
+        return "I'm currently looking for backend or Python developer roles."
 
-    # Build bigrams
-    first_bigrams = {}
-    for i in range(len(first) - 1):
-      bigram = first[i:i+2]
-      first_bigrams[bigram] = first_bigrams.get(bigram, 0) + 1
+    def my_contacts(self):
+        return (
+            "Facebook: https://facebook.com/edri.a.marinas\n"
+            "LinkedIn: https://linkedin.com/in/edrian-a-marinas\n"
+            "GitHub: https://github.com/edrian-a-marinas\n"
+            "Gmail: edrian.aldrin.marinas@gmail.com"
+        )
 
-    # Count intersection
-    intersection_size = 0
-    for i in range(len(second) - 1):
-      bigram = second[i:i+2]
-      if first_bigrams.get(bigram, 0) > 0:
-        first_bigrams[bigram] -= 1
-        intersection_size += 1
+    # ---------- Utilities ----------
+    def flip_coin(self):
+        return "Heads" if random.random() < 0.5 else "Tails"
 
-    return (2.0 * intersection_size) / (len(first) + len(second) - 2)
+    def roll_dice(self):
+        return f"You rolled a {random.randint(1, 6)}"
 
-  def string_similarity(self, main_string: str, target_strings: list):
-    ratings = []
-    best_match_index = 0
+    def date_today(self):
+        now = datetime.now()
+        return now.strftime("Today is %B %d, %Y")
 
-    for i, target in enumerate(target_strings):
-      rating = self.compare_two_strings(main_string, target)
-      ratings.append({"target": target, "rating": rating})
-      if rating > ratings[best_match_index]["rating"]:
-        best_match_index = i
+    def get_joke(self):
+        try:
+            res = requests.get(
+                "https://official-joke-api.appspot.com/jokes/random",
+                timeout=5
+            )
+            data = res.json()
+            return f"{data['setup']} — {data['punchline']}"
+        except Exception:
+            return "I couldn't fetch a joke right now."
 
-    return {
-      "ratings": ratings,
-      "best_match_index": best_match_index,
-      "best_match": ratings[best_match_index]
-    }
+    def get_quote(self):
+        try:
+            res = requests.get("https://api.quotable.io/random", timeout=5)
+            data = res.json()
+            return f"“{data['content']}” — {data['author']}"
+        except Exception:
+            return "I couldn't fetch a quote right now."
 
-  # --- Get response ---
-  def get_response(self, message: str):
+    # ---------- Similarity ----------
+    def compare_two_strings(self, a: str, b: str) -> float:
+        a, b = a.replace(" ", ""), b.replace(" ", "")
+        if len(a) < 2 or len(b) < 2:
+            return 0.0
 
-    responses = {**self.default_responses, **self.additional_responses}
+        bigrams = {}
+        for i in range(len(a) - 1):
+            bg = a[i:i+2]
+            bigrams[bg] = bigrams.get(bg, 0) + 1
 
-    similarity_data = self.string_similarity(message.lower(), list(responses.keys()))
-    best_match_index = similarity_data["best_match_index"]
-    best_match_rating = similarity_data["ratings"][best_match_index]["rating"]
-    best_match_key = similarity_data["ratings"][best_match_index]["target"]
+        intersection = 0
+        for i in range(len(b) - 1):
+            bg = b[i:i+2]
+            if bigrams.get(bg, 0) > 0:
+                bigrams[bg] -= 1
+                intersection += 1
 
-    response = responses[best_match_key]
+        return (2 * intersection) / (len(a) + len(b) - 2)
 
-    if best_match_rating <= 0.3:
-      return self.unsuccessful_response
+    # ---------- Main logic ----------
+    def get_response(self, message: str):
+        message = message.lower().strip()
 
-    # Call if function
-    if callable(response):
-      return response()
-    return response
+        # ---- HARD INTENT CHECKS (fast & accurate) ----
+        if any(word in message for word in ["name", "who are you"]):
+            return self.fullName()
+
+        if any(word in message for word in ["age", "old are you"]):
+            return "I'm 21 years old."
+
+        if any(word in message for word in ["hello", "hi", "hey"]):
+            return "Hello! How can I help you?"
+
+        # ---- SIMILARITY MATCHING (ONLY IF STRONG) ----
+        best_match = None
+        best_score = 0.0
+
+        for key in self.default_responses:
+            score = self.compare_two_strings(message, key)
+            if score > best_score:
+                best_score = score
+                best_match = key
+
+        # Require HIGH confidence
+        if best_score >= 0.6 and best_match:
+            response = self.default_responses[best_match]
+            return response() if callable(response) else response
+
+        # ---- AI THINKING FALLBACK ----
+        return ai_think(message)
+
+    
+    
