@@ -1,0 +1,204 @@
+/* Basic body and font */
+body {
+  font-family: Arial, sans-serif;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+/* Icons for chat avatars */
+.icon {
+  height: 50px;
+}
+
+/* Send button */
+.send-button {
+  background-color: rgb(51, 153, 255);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* Chat input + button container */
+.chat-input-container {
+  display: flex;
+  flex: 1;
+  gap: 10px; /* spacing between input+tooltip and button */
+}
+
+/* Wrap input + tooltip */
+.input-with-tooltip {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+/* Chat input */
+.chat-input {
+  font-size: 15px;
+  padding: 12px 15px;
+  border-width: 1px;
+  border-radius: 10px;
+  flex: 1; /* take full width inside flex */
+}
+
+/* Chat container at bottom (optional override) */
+.chatbot-container-bottom .chat-input-container {
+  margin-bottom: 52px;
+}
+
+/* Messages container scrollbar */
+.chat-messages-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* App container */
+.app-container {
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* User chat messages */
+.chat-message-user {
+  display: flex;
+  justify-content: end;
+  align-items: start;
+}
+
+/* Robot chat messages */
+.chat-message-robot {
+  display: flex;
+  align-items: start;
+}
+
+/* Chat message bubble */
+.chat-message-text{
+  background-color: rgb(238, 238, 238);
+  padding: 15px 20px;
+  border-radius: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-bottom: 20px;
+  max-width: 300px;
+}
+
+/* Chat messages container */
+.chat-messages-container {
+  flex-grow: 1;
+  margin-top: 20px;
+  overflow: scroll;
+  scrollbar-width: none;
+}
+
+/* Welcome message */
+.welcome-message {
+  color: rgb(120, 120, 120);
+  text-align: center;
+  margin-top: 0;
+}
+
+/* Typing dots animation */
+.typing {
+  display: inline-block;
+  position: relative;
+  width: 24px; /* space for three dots */
+  height: 20px;
+}
+
+.typing::before,
+.typing::after,
+.typing span {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin: 0 1px;
+  background-color: rgb(120, 120, 120);
+  border-radius: 50%;
+  animation: typingDots 1.5s infinite;
+}
+
+.typing span {
+  animation-delay: 0.2s;
+}
+
+.typing::after {
+  animation-delay: 0.4s;
+}
+
+@keyframes typingDots {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0.3;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.chat-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* space between tooltip and input */
+  margin-bottom: 60px;
+}
+
+/* Keep existing tooltip styles */
+.tooltip-icon {
+  background-color: #ddd;
+  color: #333;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 14px;
+  text-align: center;
+  line-height: 20px;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+  flex-shrink: 0; /* don't shrink */
+  margin-right: 5px;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: 220px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 6px 8px;
+  border-radius: 6px;
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 12px;
+}
+
+.tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+.tooltip-icon:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
