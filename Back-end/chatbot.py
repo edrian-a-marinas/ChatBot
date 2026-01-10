@@ -12,9 +12,9 @@ class Chatbot:
             "nickname": lambda: "Call me Ian for short",
             "degree": lambda: "I'm currently holding a BS in Information Technology from Our Lady of Fatima.",
 
-            "hello": lambda: "Hello! How can I help you?",
-            "hi": lambda: "Hi! What can I do for you?",
-            "how are you": lambda: "I'm doing great! How can I help you?",
+            "hello": self.random_greeting,
+            "hi": self.random_greeting,
+            "how are you": self.random_status,
             "thank you": lambda: "No problem! Let me know if you need anything else.",
 
             "age": lambda: f"I'm {self.age()}",
@@ -23,11 +23,13 @@ class Chatbot:
             "hobbies": lambda: "I enjoy coding and listening to music.",
             "skills": lambda: "Python, JavaScript, SQL, and HTML/CSS.",
             "passion": lambda: "I'm passionate about Python and backend development.",
+            "gender": lambda: "Male",
 
             "favorite movie": lambda: "My favorite movie is Knives Out.",
             "favorite show": lambda: "My favorite show is Breaking Bad.",
             "favorite anime": lambda: "One Piece is my favorite anime.",
             "favorite language": lambda: "My favorite programming language is Python.",
+            
 
             "status": self.jobHunt,
             "do you job": self.jobHunt,
@@ -45,6 +47,21 @@ class Chatbot:
 
 
     # ---------- Identity ----------
+    def random_status(self):
+        return random.choice([
+            "I’m doing great—thanks for asking! What would you like to know about Edrian?",
+            "All systems running smoothly 😄 What can I help you with?",
+            "Doing well! How can I assist you today?"
+        ])
+    
+    def random_greeting(self):
+        return random.choice([
+            "Hello! I’m Edrian’s bot 🤖 What would you like to know about him?",
+            "Hi there! 👋 I’m Edrian’s bot. Ask me anything about him!",
+            "Hey! I’m Edrian’s AI assistant. How can I help you today?"
+        ])
+
+
     def introduce(self):
         return f"I'm {self.fullName()}, {self.age()} {self.whereLive()} {self.jobHunt()}"
     
@@ -133,7 +150,7 @@ class Chatbot:
             return "I'm 21 years old."
 
         if any(word in message for word in ["hello", "hi", "hey"]):
-            return "Hello! How can I help you?"
+            return self.random_greeting()
         
 
 
