@@ -213,6 +213,9 @@ await - wait for this to finish before running. but only inside the async functi
 
 
 
+endpoint = @app.post("/chat") path and http method. /chat and POST, 
+
+
 
 
 
