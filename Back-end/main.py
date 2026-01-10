@@ -6,6 +6,7 @@ from chatbot import Chatbot
 app = FastAPI()
 chatbot = Chatbot()
 
+
 # Allow frontend to access backend
 app.add_middleware(
     CORSMiddleware,
@@ -25,3 +26,7 @@ class ChatResponse(BaseModel):
 def chat_endpoint(request: ChatRequest):  # this is like request = ChatRequest indirect way
     response_text = chatbot.get_response(request.message) # calling the function in chatboy.py
     return {"reply": response_text} 
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
