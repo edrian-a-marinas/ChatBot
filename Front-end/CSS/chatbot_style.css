@@ -1,16 +1,13 @@
-/* Basic body and font */
 body {
   font-family: Arial, sans-serif;
   margin-top: 0px;
   margin-bottom: 0px;
 }
 
-/* Icons for chat avatars */
 .icon {
   height: 50px;
 }
 
-/* Send button */
 .send-button {
   background-color: rgb(51, 153, 255);
   color: white;
@@ -21,14 +18,12 @@ body {
   cursor: pointer;
 }
 
-/* Chat input + button container */
 .chat-input-container {
   display: flex;
   flex: 1;
-  gap: 10px; /* spacing between input+tooltip and button */
+  gap: 10px; 
 }
 
-/* Wrap input + tooltip */
 .input-with-tooltip {
   display: flex;
   align-items: center;
@@ -36,26 +31,22 @@ body {
   width: 100%;
 }
 
-/* Chat input */
 .chat-input {
   font-size: 15px;
   padding: 12px 15px;
   border-width: 1px;
   border-radius: 10px;
-  flex: 1; /* take full width inside flex */
+  flex: 1;
 }
 
-/* Chat container at bottom (optional override) */
 .chatbot-container-bottom .chat-input-container {
   margin-bottom: 52px;
 }
 
-/* Messages container scrollbar */
 .chat-messages-container::-webkit-scrollbar {
   display: none;
 }
 
-/* App container */
 .app-container {
   max-width: 600px;
   margin-left: auto;
@@ -65,20 +56,17 @@ body {
   flex-direction: column;
 }
 
-/* User chat messages */
 .chat-message-user {
   display: flex;
   justify-content: end;
   align-items: start;
 }
 
-/* Robot chat messages */
 .chat-message-robot {
   display: flex;
   align-items: start;
 }
 
-/* Chat message bubble */
 .chat-message-text{
   background-color: rgb(238, 238, 238);
   padding: 15px 20px;
@@ -89,7 +77,6 @@ body {
   max-width: 300px;
 }
 
-/* Chat messages container */
 .chat-messages-container {
   flex-grow: 1;
   margin-top: 20px;
@@ -97,18 +84,16 @@ body {
   scrollbar-width: none;
 }
 
-/* Welcome message */
 .welcome-message {
   color: rgb(120, 120, 120);
   text-align: center;
-  margin-top: 0;
+  margin-top: 50px;
 }
 
-/* Typing dots animation */
 .typing {
   display: inline-block;
   position: relative;
-  width: 24px; /* space for three dots */
+  width: 24px;
   height: 20px;
 }
 
@@ -144,14 +129,14 @@ body {
   }
 }
 
+
 .chat-input-wrapper {
   display: flex;
   align-items: center;
-  gap: 8px; /* space between tooltip and input */
+  gap: 8px; 
   margin-bottom: 60px;
 }
 
-/* Keep existing tooltip styles */
 .tooltip-icon {
   background-color: #ddd;
   color: #333;
@@ -164,7 +149,7 @@ body {
   cursor: pointer;
   position: relative;
   user-select: none;
-  flex-shrink: 0; /* don't shrink */
+  flex-shrink: 0; 
   margin-right: 5px;
 }
 
@@ -200,5 +185,50 @@ body {
 .tooltip-icon:hover .tooltip-text {
   visibility: visible;
   opacity: 1;
+}
+
+
+
+
+
+
+/* Topbar itself */
+.server-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 1000;
+
+  animation: slideDown 0.3s ease;
+}
+
+/* States */
+.server-topbar.disconnected {
+  background-color: #dc3545;
+  color: white;
+}
+
+.server-topbar.connected {
+  background-color: #198754;
+  color: white;
+}
+
+/* Nice entrance animation */
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
