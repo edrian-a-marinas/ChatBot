@@ -14,7 +14,7 @@ function ChatInput({ chatMessages, setChatMessages }) {
   async function sendMessage() {
     if (!inputText.trim()) return; // Ignore empty input
 
-    // Add user message first
+
     const newChatMessages = [
       ...chatMessages,
       {
@@ -26,13 +26,15 @@ function ChatInput({ chatMessages, setChatMessages }) {
 
     setChatMessages(newChatMessages);
     const typingMessage = {
-      message: 'Thinking...',
+      message: <span className="typing"><span></span></span>,
       sender: 'robot',
       id: crypto.randomUUID(),
       typing: true // optional flag
     };    
     setChatMessages(prev => [...prev, typingMessage]);
     
+    setInputText('');
+
     try {
       const res = await fetch('http://127.0.0.1:8000/chat', {  // Call Python main.py backend
         method: 'POST',
@@ -66,46 +68,79 @@ function ChatInput({ chatMessages, setChatMessages }) {
       ]);
     }
 
-    setInputText('');
+
   }
 
   return (
-    <>
-      <input
-        placeholder="Get to know Ian"
-        size="25"
-        onChange={saveInputText}
-        onKeyDown={enterText}
-        
-        value={inputText}
-      />
-      <button onClick={sendMessage}>
-        Send Text
-      </button>
-    </>
+    <div className="chat-input-wrapper">
+      <span className="tooltip-icon">?
+        <span className="tooltip-text">
+          Ask about Edrian's skills, hobbies, or personal details!
+        </span>
+      </span>
+
+      <div className="chat-input-container">
+        <input
+          className="chat-input"
+          placeholder="Ask me anything about Edrian…"
+          size="25"
+          onChange={saveInputText}
+          onKeyDown={enterText}
+          value={inputText}
+        />
+        <button 
+          onClick={sendMessage}
+          className="send-button"
+        >
+          Send
+        </button>
+      </div>
+    </div>
   );
 }
 
 function ChatMessage({ message, sender, typing }) {
   return (
-    <div>
+    <div className = {
+      sender === 'user'
+      ? 'chat-message-user'
+      : 'chat-message-robot'
+    } >
       {sender === 'robot' && (
-        <img className="icon" src="CSS/Images/robot.png" />
+        <img className="icon" src="./CSS/Images/bot.png" />
       )}
 
-      <span className={typing ? 'typing' : ''}>
-        {message}
-      </span>
+      <div className = "chat-message-text"> 
+        <span className={typing ? 'typing' : ''}>
+          {message}
+        </span>
+      </div>
+
       {sender === 'user' && (
-        <img className="icon" src="CSS/Images/user.png" />
+        <img className="icon" src="./CSS/Images/usr.png" />
       )}
     </div>
   );
 }
 
 function ChatMessages({ chatMessages }) {
+  const chatMessagesRef = React.useRef(null);
+
+  React.useEffect(() => {
+    const containerElem = chatMessagesRef.current;
+    if (containerElem) {
+      containerElem.scrollTop = containerElem.scrollHeight;
+    }
+  }, [chatMessages]);
+
   return (
-    <>
+    <div className="chat-messages-container" ref={chatMessagesRef}>
+      {chatMessages.length === 0 && (
+        <p className="welcome-message">
+          Hi! I'm Edrian's AI. Ask me anything about Edrian's skills, hobbies, or background.
+        </p>
+      )}
+
       {chatMessages.map(chatMessage => (
         <ChatMessage
           message={chatMessage.message}
@@ -113,7 +148,7 @@ function ChatMessages({ chatMessages }) {
           key={chatMessage.id}
         />
       ))}
-    </>
+    </div>
   );
 }
 
@@ -121,15 +156,16 @@ function App() {
   const [chatMessages, setChatMessages] = React.useState([]);
 
   return (
-    <>
+    <div className="app-container">
+      <ChatMessages
+        chatMessages={chatMessages}
+      />
+
       <ChatInput
         chatMessages={chatMessages}
         setChatMessages={setChatMessages}
       />
-      <ChatMessages
-        chatMessages={chatMessages}
-      />
-    </>
+    </div>
   );
 }
 
