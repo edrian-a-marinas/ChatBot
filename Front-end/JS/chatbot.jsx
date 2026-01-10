@@ -1,3 +1,11 @@
+function generateId() {
+  // Use crypto.randomUUID if available, otherwise fallback to random string
+  return crypto && crypto.randomUUID
+    ? crypto.randomUUID()
+    : Math.random().toString(36).substring(2, 10);
+}
+
+
 function ChatInput({ chatMessages, setChatMessages }) {
   const [inputText, setInputText] = React.useState('');
 
@@ -20,7 +28,8 @@ function ChatInput({ chatMessages, setChatMessages }) {
       {
         message: inputText,
         sender: 'user',
-        id: crypto.randomUUID()
+        id: generateId()
+
       }
     ];
 
@@ -28,7 +37,7 @@ function ChatInput({ chatMessages, setChatMessages }) {
     const typingMessage = {
       message: <span className="typing"><span></span></span>,
       sender: 'robot',
-      id: crypto.randomUUID(),
+      id: generateId(),
       typing: true // optional flag
     };    
     setChatMessages(prev => [...prev, typingMessage]);
@@ -36,7 +45,7 @@ function ChatInput({ chatMessages, setChatMessages }) {
     setInputText('');
 
     try {
-      const res = await fetch('http://127.0.0.1:8000/chat', {  // Call Python main.py backend
+      const res = await fetch('http://127.0.0.1:8000/chat', {  //Call Python main.py backend 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: inputText })
@@ -52,7 +61,7 @@ function ChatInput({ chatMessages, setChatMessages }) {
         {
           message: data.reply,
           sender: 'robot',
-          id: crypto.randomUUID()
+          id: generateId()
         }
       ]);
 
@@ -63,7 +72,7 @@ function ChatInput({ chatMessages, setChatMessages }) {
         {
           message: 'Server error. Please try again later.',
           sender: 'robot',
-          id: crypto.randomUUID()
+          id: generateId()
         }
       ]);
     }
@@ -75,7 +84,7 @@ function ChatInput({ chatMessages, setChatMessages }) {
     <div className="chat-input-wrapper">
       <span className="tooltip-icon">?
         <span className="tooltip-text">
-          Ask about Edrian's skills, hobbies, or personal details!
+          Ask about Edrian's skills, status, contacts or personal details!
         </span>
       </span>
 
@@ -152,19 +161,64 @@ function ChatMessages({ chatMessages }) {
   );
 }
 
+
+function useServerStatus() {
+  const [serverStatus, setServerStatus] = React.useState('connected');
+  const [showTopbar, setShowTopbar] = React.useState(false);
+
+  React.useEffect(() => {
+    async function checkServer() {
+      try {
+        await fetch('http://127.0.0.1:8000/', { method: 'GET' }); // http://127.0.0.1:8000/ health
+
+        if (serverStatus !== 'connected') {
+          setServerStatus('connected');
+          setShowTopbar(true);
+          setTimeout(() => setShowTopbar(false), 3000);
+        }
+      } catch {
+        if (serverStatus !== 'disconnected') {
+          setServerStatus('disconnected');
+          setShowTopbar(true);
+        }
+      }
+    }
+
+    checkServer(); // run immediately
+    const interval = setInterval(checkServer, 5000);
+
+    return () => clearInterval(interval);
+  }, [serverStatus]);
+
+  return { serverStatus, showTopbar };
+}
+
+
 function App() {
   const [chatMessages, setChatMessages] = React.useState([]);
+  const { serverStatus, showTopbar } = useServerStatus();
 
   return (
-    <div className="app-container">
-      <ChatMessages
-        chatMessages={chatMessages}
-      />
+    <div className={`app-shell ${showTopbar ? 'with-topbar' : ''}`}>
+      {showTopbar && (
+        <div className={`server-topbar ${serverStatus}`}>
+          {serverStatus === 'connected'
+            ? '✅ Server reconnected'
+            : '🔴 Server is down. Reconnecting...'}
+        </div>
+      )}
 
-      <ChatInput
-        chatMessages={chatMessages}
-        setChatMessages={setChatMessages}
-      />
+
+      <div className="app-container">
+        <ChatMessages
+          chatMessages={chatMessages}
+        />
+
+        <ChatInput
+          chatMessages={chatMessages}
+          setChatMessages={setChatMessages}
+        />
+      </div>
     </div>
   );
 }
