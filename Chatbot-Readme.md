@@ -5,9 +5,12 @@ Ask about Edrian’s skills, details, background, or just chat for fun!
 
 ---
 
-## Demo
+## Click to Watch Demo
 
-📹 [![Demo Video](https://drive.google.com/file/d/1bHPrK90a0bKDiNV69AzrUYx5ieCgxRZt/view?usp=sharing)](https://drive.google.com/file/d/17lLGOz7Ig4iCePseYQrqKlRB1pm2hn0a/view?usp=sharing)
+
+<a href="https://drive.google.com/file/d/17lLGOz7Ig4iCePseYQrqKlRB1pm2hn0a/view?usp=sharing" target="_blank">
+  <img src="https://drive.google.com/uc?export=view&id=1bHPrK90a0bKDiNV69AzrUYx5ieCgxRZt" alt="Demo Video" width="400"/>
+</a>
 
 
 ---
@@ -58,3 +61,4 @@ Frontend URL: http://127.0.0.1:5000
 Backend URL: http://127.0.0.1:8000
 ```
 Then start chatting with me AI form! 🎉
+
