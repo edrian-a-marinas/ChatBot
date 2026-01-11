@@ -1,52 +1,12 @@
+/* ------------------- Body ------------------- */
 body {
   font-family: Arial, sans-serif;
   margin-top: 0px;
   margin-bottom: 0px;
 }
 
-.icon {
-  height: 50px;
-}
 
-.send-button {
-  background-color: rgb(51, 153, 255);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 15px;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.chat-input-container {
-  display: flex;
-  flex: 1;
-  gap: 10px; 
-}
-
-.input-with-tooltip {
-  display: flex;
-  align-items: center;
-  position: relative;
-  width: 100%;
-}
-
-.chat-input {
-  font-size: 15px;
-  padding: 12px 15px;
-  border-width: 1px;
-  border-radius: 10px;
-  flex: 1;
-}
-
-.chatbot-container-bottom .chat-input-container {
-  margin-bottom: 52px;
-}
-
-.chat-messages-container::-webkit-scrollbar {
-  display: none;
-}
-
+/* ------------------- App Container ------------------- */
 .app-container {
   max-width: 600px;
   margin-left: auto;
@@ -56,6 +16,27 @@ body {
   flex-direction: column;
 }
 
+
+/* ------------------- Chat Messages ------------------- */
+.chat-messages-container {
+  flex-grow: 1;
+  margin-top: 20px;
+  overflow: scroll;
+  scrollbar-width: none;
+}
+
+.chat-messages-container::-webkit-scrollbar {
+  display: none;
+}
+
+.welcome-message {
+  color: rgb(120, 120, 120);
+  text-align: center;
+  margin-top: 50px;
+}
+
+
+/* ------------------- Chat Bubbles ------------------- */
 .chat-message-user {
   display: flex;
   justify-content: end;
@@ -67,7 +48,7 @@ body {
   align-items: start;
 }
 
-.chat-message-text{
+.chat-message-text {
   background-color: rgb(238, 238, 238);
   padding: 15px 20px;
   border-radius: 10px;
@@ -77,19 +58,12 @@ body {
   max-width: 300px;
 }
 
-.chat-messages-container {
-  flex-grow: 1;
-  margin-top: 20px;
-  overflow: scroll;
-  scrollbar-width: none;
+.icon {
+  height: 50px;
 }
 
-.welcome-message {
-  color: rgb(120, 120, 120);
-  text-align: center;
-  margin-top: 50px;
-}
 
+/* ------------------- Typing Animation ------------------- */
 .typing {
   display: inline-block;
   position: relative;
@@ -130,13 +104,90 @@ body {
 }
 
 
+/* ------------------- Chat Input ------------------- */
 .chat-input-wrapper {
   display: flex;
   align-items: center;
-  gap: 8px; 
+  gap: 8px;
   margin-bottom: 60px;
 }
 
+.chat-input-container {
+  display: flex;
+  flex: 1;
+  gap: 10px;
+}
+
+.input-with-tooltip {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.chat-input {
+  font-size: 15px;
+  padding: 12px 15px;
+  border-width: 1px;
+  border-radius: 10px;
+  flex: 1;
+}
+
+.send-button {
+  background-color: rgb(51, 153, 255);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.chatbot-container-bottom .chat-input-container {
+  margin-bottom: 52px;
+}
+
+
+/* ------------------- Server Topbar ------------------- */
+.server-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 1000;
+
+  animation: slideDown 0.3s ease;
+}
+
+.server-topbar.disconnected {
+  background-color: #dc3545;
+  color: white;
+}
+
+.server-topbar.connected {
+  background-color: #198754;
+  color: white;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+
+/* ------------------- Tooltip (Place at the end as helper) ------------------- */
 .tooltip-icon {
   background-color: #ddd;
   color: #333;
@@ -149,7 +200,7 @@ body {
   cursor: pointer;
   position: relative;
   user-select: none;
-  flex-shrink: 0; 
+  flex-shrink: 0;
   margin-right: 5px;
 }
 
@@ -186,49 +237,3 @@ body {
   visibility: visible;
   opacity: 1;
 }
-
-
-
-
-
-
-/* Topbar itself */
-.server-topbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 40px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 14px;
-  font-weight: 500;
-  z-index: 1000;
-
-  animation: slideDown 0.3s ease;
-}
-
-/* States */
-.server-topbar.disconnected {
-  background-color: #dc3545;
-  color: white;
-}
-
-.server-topbar.connected {
-  background-color: #198754;
-  color: white;
-}
-
-/* Nice entrance animation */
-@keyframes slideDown {
-  from {
-    transform: translateY(-100%);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
-

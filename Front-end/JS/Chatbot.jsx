@@ -1,11 +1,12 @@
+// ------------------- Utilities / Helper functions -------------------
 function generateId() {
-  // Use crypto.randomUUID if available, otherwise fallback to random string
   return crypto && crypto.randomUUID
     ? crypto.randomUUID()
     : Math.random().toString(36).substring(2, 10);
 }
 
 
+// ------------------- Chat Input Component  -------------------
 function ChatInput({ chatMessages, setChatMessages }) {
   const [inputText, setInputText] = React.useState('');
 
@@ -19,9 +20,9 @@ function ChatInput({ chatMessages, setChatMessages }) {
     }
   }
 
+  // Sends message to backend and updates chat state
   async function sendMessage() {
     if (!inputText.trim()) return; // Ignore empty input
-
 
     const newChatMessages = [
       ...chatMessages,
@@ -38,24 +39,25 @@ function ChatInput({ chatMessages, setChatMessages }) {
       message: <span className="typing"><span></span></span>,
       sender: 'robot',
       id: generateId(),
-      typing: true // optional flag
+      typing: true
     };    
     setChatMessages(prev => [...prev, typingMessage]);
     
     setInputText('');
 
+    // Call Python backend to get AI response 
     try {
-      const res = await fetch('http://127.0.0.1:8000/chat', {  //Call Python main.py backend 
+      const res = await fetch('http://127.0.0.1:8000/chat', { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: inputText })
       });
 
-      const data = await res.json(); // wait for JSON parsing
+      const data = await res.json(); 
 
       await new Promise(resolve => setTimeout(resolve, 500));
 
-      // Add robot reply
+      // Ai response to your chat    
       setChatMessages([
         ...newChatMessages,
         {
@@ -108,6 +110,8 @@ function ChatInput({ chatMessages, setChatMessages }) {
   );
 }
 
+
+// ------------------- Chat Message Component -------------------
 function ChatMessage({ message, sender, typing }) {
   return (
     <div className = {
@@ -132,6 +136,8 @@ function ChatMessage({ message, sender, typing }) {
   );
 }
 
+
+// ------------------- Chat Messages Container Mostly -------------------
 function ChatMessages({ chatMessages }) {
   const chatMessagesRef = React.useRef(null);
 
@@ -162,6 +168,7 @@ function ChatMessages({ chatMessages }) {
 }
 
 
+// ------------------- Custom hook: monitor backend server every 5 seconds -------------------
 function useServerStatus() {
   const [serverStatus, setServerStatus] = React.useState('connected');
   const [showTopbar, setShowTopbar] = React.useState(false);
@@ -169,7 +176,7 @@ function useServerStatus() {
   React.useEffect(() => {
     async function checkServer() {
       try {
-        await fetch('http://127.0.0.1:8000/', { method: 'GET' }); // http://127.0.0.1:8000/ health
+        await fetch('http://127.0.0.1:8000/health', { method: 'GET' }); // checking if the server is fine
 
         if (serverStatus !== 'connected') {
           setServerStatus('connected');
@@ -184,7 +191,7 @@ function useServerStatus() {
       }
     }
 
-    checkServer(); // run immediately
+    checkServer(); // check immediately
     const interval = setInterval(checkServer, 5000);
 
     return () => clearInterval(interval);
@@ -194,6 +201,7 @@ function useServerStatus() {
 }
 
 
+// ------------------- Main App Component -------------------
 function App() {
   const [chatMessages, setChatMessages] = React.useState([]);
   const { serverStatus, showTopbar } = useServerStatus();
@@ -223,54 +231,9 @@ function App() {
   );
 }
 
+
+// ------------------- Render React App into HTML container -------------------
 const container = document.querySelector('.js-container');
 const containerRoot = ReactDOM.createRoot(container);
 containerRoot.render(<App />);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-/*
-MAKE THIS PROJECT AS SELF QUESTION SOMETHING
-
-
-This part we use the chatMessage as the new value ng chatMessage {blah: blah} 
-
-  const chatMessageComponents = chatMessages.map((chatMessage) => {
-    return (
-      <ChatMessage 
-        message={chatMessage.message}
-        sender={chatMessage.sender}
-      />
-    );
-  });
-
-
-Special props/attributes
-onClick 
-key
-className
-...chatMessage / spread notation/ copy 
-react.useSate
-
-
-  */
