@@ -78,7 +78,7 @@ class Chatbot:
     return random.choice([
       "Hello! I’m Edrian’s bot 🤖 What would you like to know about him?",
       "Hi there! 👋 I’m Edrian’s bot. Ask me anything about him!",
-      "Yoo! I can tell you jokes too if you want, aside from Edrian's details!",
+      "Yoo! I can tell you jokes, answer math and todays date, aside from Edrian's details!",
       "Hey! I’m Edrian’s AI assistant. How can I help you today?"
     ])
 
