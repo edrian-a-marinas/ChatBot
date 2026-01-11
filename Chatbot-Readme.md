@@ -7,13 +7,8 @@ Ask about Edrian’s skills, details, background, or just chat for fun!
 
 ## Demo
 
-![Screenshot 1](https://drive.google.com/uc?export=view&id=YOUR_IMAGE1_ID)  
-![Screenshot 2](https://drive.google.com/uc?export=view&id=YOUR_IMAGE2_ID)  
+📹 [![Demo Video](https://drive.google.com/file/d/1bHPrK90a0bKDiNV69AzrUYx5ieCgxRZt/view?usp=sharing)](https://drive.google.com/file/d/17lLGOz7Ig4iCePseYQrqKlRB1pm2hn0a/view?usp=sharing)
 
-📹 [Watch Demo Video](https://drive.google.com/file/d/YOUR_VIDEO_ID/view?usp=sharing)  
-
-markdown
-📹 ![Alt Text](https://drive.google.com/uc?export=view&id=FILE_ID)
 
 ---
 
@@ -27,6 +22,7 @@ markdown
 ---
 
 ## Project Structure
+```
 ChatBot/
 ├─ Front-end/
 │ ├─ index.html
@@ -37,25 +33,28 @@ ChatBot/
 ├─ app.py
 ├─ chatbot.py
 └─ ai_brain.py
-
+```
 
 
 ---
 
 ## How to Run
 
-**Frontend:**
-
+**Front-end:**
+```
 bash
 cd Front-end
 python -m http.server 5000
-
+```
+**Back-end:**
+```
 bash
 cd Back-end
 uvicorn app:app --reload
-
+```
 Make sure too that Ollama is installed and running
-
+```
 Frontend URL: http://127.0.0.1:5000
 Backend URL: http://127.0.0.1:8000
+```
 Then start chatting with me AI form! 🎉
