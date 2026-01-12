@@ -58,14 +58,16 @@ function ChatInput({ chatMessages, setChatMessages }) {
       await new Promise(resolve => setTimeout(resolve, 500));
 
       // Ai response to your chat    
-      setChatMessages([
-        ...newChatMessages,
-        {
-          message: data.reply,
-          sender: 'robot',
-          id: generateId()
-        }
-      ]);
+      setChatMessages(prev =>
+        prev
+          .filter(msg => !msg.typing) 
+          .concat({
+            message: data.reply,
+            sender: 'robot',
+            id: generateId()
+          })
+      );
+
 
     } catch (err) {
       console.error(err);
