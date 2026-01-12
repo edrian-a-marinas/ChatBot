@@ -20,10 +20,7 @@ You might notice that the AI takes a bit longer to respond in the demo video.
 
 This is because the chatbot runs entirely **locally** on my laptop, which has **entry-level specs** (CPU-Intel i3 1005G1 , GPU-NVIDIA MX330 , RAM-8GB).  
 
-The first AI response can be slower due to **model loading and token generation**, but subsequent messages are faster.  
-
 Thank you for your patience, and I hope you still enjoy chatting with Edrian’s AI! 🤖
-
 
 ---
 
