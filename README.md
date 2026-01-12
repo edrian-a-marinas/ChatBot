@@ -12,6 +12,18 @@ Ask about Edrian’s skills, details, background, or just chat for fun!
   <img src="https://drive.google.com/uc?export=view&id=1bHPrK90a0bKDiNV69AzrUYx5ieCgxRZt" alt="Demo Video" width="400"/>
 </a>
 
+---
+
+## ⚠️ About Response Speed
+
+You might notice that the AI takes a bit longer to respond in the demo video.  
+
+This is because the chatbot runs entirely **locally** on my laptop, which has **entry-level specs** (CPU-Intel i3 1005G1 , GPU-NVIDIA MX330 , RAM-8GB).  
+
+The first AI response can be slower due to **model loading and token generation**, but subsequent messages are faster.  
+
+Thank you for your patience, and I hope you still enjoy chatting with Edrian’s AI! 🤖
+
 
 ---
 
