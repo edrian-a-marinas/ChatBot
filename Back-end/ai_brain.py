@@ -1,4 +1,5 @@
 import requests
+import asyncio
 
 OLLAMA_URL = "http://localhost:11434/api/generate" 
 
@@ -23,22 +24,30 @@ Rules:
 # ---------- Main logic: AI if no predefined/default response matches ----------
 def ai_think(user_message: str) -> str:
   payload = {
-    "model": "llama3",
+    "model": "phi3",
     "prompt": f"{SYSTEM_PROMPT}\n\nUser: {user_message}\nEdrian:",
     "stream": False,
-    "num_predict": 200
+    "num_predict": 20
   }
 
   try:
-    res = requests.post(OLLAMA_URL, json=payload, timeout=30)  
+    res = requests.post(OLLAMA_URL, json=payload, timeout=20)  
     res.raise_for_status()  
     data = res.json()
 
     return data.get("response", "Hmm, I couldn't generate a reply.").strip()
 
-  except requests.exceptions.ReadTimeout: # after 30 seconds timeout
+  except requests.exceptions.ReadTimeout: 
     return "I’m thinking a bit longer than usual. Please try again."
 
   except Exception as e: 
+    #print(e)
     return "I couldn’t process that right now. Please try again"
   
+
+async def ai_think_async(user_message: str) -> str:
+    try:
+        return await asyncio.to_thread(ai_think, user_message)
+    except Exception as e:
+        #print(e, "Here in aithinkAsync") debugging
+        return "I couldn’t process that right now. Please try again."

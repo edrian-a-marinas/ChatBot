@@ -1,7 +1,7 @@
 import random
 import requests
 from datetime import datetime
-from ai_brain import ai_think
+from ai_brain import ai_think_async
 
 
 class Chatbot:
@@ -122,7 +122,7 @@ class Chatbot:
 
 
   # ---------- Main logic / Fast response ----------
-  def get_response(self, message: str):
+  async def get_response(self, message: str):
     message = message.lower().strip()
 
     # ----  For fast and accurate response  ----
@@ -154,4 +154,4 @@ class Chatbot:
 
 
     # ---- AI THINKING FALLBACK / Longer response ----
-    return ai_think(message)
+    return await ai_think_async(message)
