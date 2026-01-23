@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from chatbot import Chatbot  
@@ -10,23 +10,28 @@ chatbot = Chatbot()
 # ---------- Allow the frontend server to send requests to this API ----------
 app.add_middleware(
   CORSMiddleware,
-  allow_origins=["http://127.0.0.1:5500"],  
+  allow_origins=["http://127.0.0.1:5000"],  
   allow_credentials=True,
   allow_methods=["*"],
   allow_headers=["*"],
 )
 
-class ChatRequest(BaseModel):
-  message: str
+class MessageCreate(BaseModel):
+  content: str
 
-class ChatResponse(BaseModel):
+class MessageResponse(BaseModel):
   reply: str
 
-@app.post("/chat")
-async def chat_endpoint(request: ChatRequest):  # this is like request = ChatRequest indirect way for pydantic
-  response_text = await chatbot.get_response(request.message) 
-  return {"reply": response_text} 
 
-@app.get("/health")
+@app.post(
+  "/api/v1/messages",
+  response_model=MessageResponse,
+  status_code=status.HTTP_201_CREATED
+)
+async def create_message(message: MessageCreate):
+  reply = await chatbot.get_response(message.content)
+  return MessageResponse(reply=str(reply))
+
+@app.get("/api/v1/health", status_code=status.HTTP_200_OK)
 def health():
-  return {"status": "ok"}
+    return {"status": "ok"}
