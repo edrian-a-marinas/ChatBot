@@ -47,13 +47,17 @@ function ChatInput({ chatMessages, setChatMessages }) {
 
     // Call Python backend to get AI response 
     try {
-      const res = await fetch('http://127.0.0.1:8000/chat', { 
+      const res = await fetch('http://127.0.0.1:8000/api/v1/messages', { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: inputText })
+        body: JSON.stringify({ content: inputText })
       });
 
-      const data = await res.json(); 
+      if (!res.ok) {
+        throw new Error(`Server error: ${res.status}`);
+      }
+
+      const data = await res.json();
 
       await new Promise(resolve => setTimeout(resolve, 500));
 
@@ -178,7 +182,7 @@ function useServerStatus() {
   React.useEffect(() => {
     async function checkServer() {
       try {
-        await fetch('http://127.0.0.1:8000/health', { method: 'GET' }); // checking if the server is fine
+        await fetch('http://127.0.0.1:8000/api/v1/health', { method: 'GET' }); // checking if the server is fine
 
         if (serverStatus !== 'connected') {
           setServerStatus('connected');
