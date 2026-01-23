@@ -1,4 +1,4 @@
-# Personal Chatbot REST FastApi and React 🤖
+# Personal Chatbot using FastApi and React (REST API) 🤖
 
 A personal AI chatbot powered by **Edrian's AI form (Ollama)**.  
 Ask about Edrian’s skills, details, background, or just chat for fun!
@@ -18,7 +18,7 @@ Ask about Edrian’s skills, details, background, or just chat for fun!
 
 You might notice that the AI takes a bit longer to respond in the demo video.  
 
-This is because the chatbot runs entirely **locally** on my laptop, which has **entry-level specs** (CPU-Intel i3 1005G1 , GPU-NVIDIA MX330 , RAM-8GB).  
+This is because the chatbot runs entirely **locally** on my laptop, which has **entry-level specs** (CPU-Intel i3 1005G1 , GPU-NVIDIA MX330 , RAM-8GB)  at the same  time recording it.  
 
 Thank you for your patience, and I hope you still enjoy chatting with Edrian’s AI! 🤖
 
